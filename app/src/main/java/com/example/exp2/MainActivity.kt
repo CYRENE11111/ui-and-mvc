@@ -2,9 +2,11 @@ package com.example.exp2
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -12,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var llContainer: LinearLayout
     private lateinit var tvResult: TextView
+    private lateinit var spinnerLanguage: Spinner
     private var textViewCount = 0 // 用于动态生成TextView的文本计数
 
     // 初始化Model
@@ -26,6 +29,17 @@ class MainActivity : AppCompatActivity() {
         val btnQuery = findViewById<Button>(R.id.btn_query)
         llContainer = findViewById(R.id.ll_container)
         tvResult = findViewById(R.id.tv_result)
+        spinnerLanguage = findViewById(R.id.spinner_language)
+
+        // 初始化区2的下拉选择框数据
+        val languageAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.language_options,
+            android.R.layout.simple_spinner_item
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        spinnerLanguage.adapter = languageAdapter
 
         // ================= 区1：动态添加TextView交互 =================
         btnAdd.setOnClickListener {
@@ -55,11 +69,14 @@ class MainActivity : AppCompatActivity() {
 
         // ================= 区2：MVC模式查询交互 =================
         btnQuery.setOnClickListener {
-            // 1. 通过Controller调用Model层获取数据（返回的是资源ID，避免硬编码）
-            val adviceResId = adviserModel.getAdvice()
+            // 1. 获取下拉框选中的计算机语言
+            val selectedLanguage = spinnerLanguage.selectedItem.toString()
 
-            // 2. 将Model返回的结果更新到View层
-            tvResult.setText(adviceResId)
+            // 2. 通过Controller调用Model层获取数据（返回的是资源ID，避免硬编码）
+            val adviceResId = adviserModel.getAdvice(selectedLanguage)
+
+            // 3. 将Model返回的结果更新到View层，输出选中的语言名字
+            tvResult.text = getString(adviceResId, selectedLanguage)
         }
     }
 }

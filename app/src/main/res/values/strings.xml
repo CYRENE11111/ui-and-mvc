@@ -8,4 +8,17 @@
     <!-- 区2资源 -->
     <string name="btn_query">查询</string>
     <string name="adviser_kotlin">kotlin</string>
+    <string name="spinner_hint">选择语言</string>
+    <string name="query_result_prefix">%1$s</string>
+
+    <!-- 区2下拉选择的语言列表 -->
+    <string-array name="language_options">
+        <item>Kotlin</item>
+        <item>Java</item>
+        <item>Python</item>
+        <item>C++</item>
+        <item>Go</item>
+        <item>Rust</item>
+    </string-array>
+
 </resources>
